@@ -73,24 +73,24 @@ let containerEnv =
                 ]
                 add_containers [
                     container {
-                        container_name "fsharpwebapp"
+                        name "fsharpwebapp"
                         private_docker_image $"{myAcr.Name.Value}.azurecr.io" "fsharpwebapp" version
                         cpu_cores 0.3<VCores>
                         memory 0.8<Gb>
                     }
                     container {
-                        container_name "http-frontend"
+                        name "http-frontend"
                         public_docker_image "nginx" "latest"
                         cpu_cores 0.2<VCores>
                         memory 0.2<Gb>
                     }
                 ]
                 replicas 1 5
-                ingress_visibility External
+                ingress_state Enabled
                 ingress_target_port 8080us
                 ingress_transport Auto
                 dapr_app_id "http"
-                add_scale_rule "http-rule" (ScaleRule.Http { ConcurrentRequests = 100 })
+                add_http_scale_rule "http-rule" { ConcurrentRequests = 100 }
             }
         ]
     }
